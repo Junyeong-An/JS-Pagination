@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pagination.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>자바 스크립트로 구현하는 페이지네이션</h1>
+    <div id="post-list"></div>
+
+    <!-- 페이지네이션 컨트롤 -->
+    <div class="pagination">
+        <button id="prev-page">이전</button>
+        <span id="page-number">page 1</span>
+        <button id="next-page">다음</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var currentPage = 1; // 현재 페이지 번호
+            var postsPerPage = 5; // 한 페이지에 보여질 글 수
+
+            // 페이지 로드 시 초기 데이터 로딩
+            loadPosts(currentPage);
+
+            // "다음" 버튼 클릭 시 다음 페이지로 이동
+            $("#next-page").on("click", function () {
+                currentPage++;
+                loadPosts(currentPage);
+            });
+
+            // "이전" 버튼 클릭 시 이전 페이지로 이동
+            $("#prev-page").on("click", function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    loadPosts(currentPage);
+                }
+            });
+
+            // 서버에서 글 데이터를 가져와서 페이지에 표시
+            function loadPosts(page) {
+                // 실제로는 서버로 Ajax 요청을 보내고 데이터 받아옴.
+                // dummyData로 대체함.
+                var dummyData = [
+                    "1. 1번째 글",
+                    "2. 2번째 글",
+                    "3. 3번째 글",
+                    "4. 4번째 글",
+                    "5. 5번째 글",
+                    "6. 6번째 글",
+                    "7. 7번째 글",
+                    // ...
+                ];
+
+                var startIndex = (page - 1) * postsPerPage;
+                var endIndex = startIndex + postsPerPage;
+
+                var pageData = dummyData.slice(startIndex, endIndex);
+                var postList = $("#post-list");
+                postList.empty();
+
+
+                for (var i = 0; i < pageData.length; i++) {
+                    postList.append("<div class='post'>" + pageData[i] + "</div>");
+                }
+
+                $("#page-number").text("페이지 " + page);
+            }
+        });
+    </script>
+</body>
+
+</html>
